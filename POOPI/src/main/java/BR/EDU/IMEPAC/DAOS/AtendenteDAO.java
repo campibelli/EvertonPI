@@ -4,10 +4,9 @@
  */
 package BR.EDU.IMEPAC.DAOS;
 
-import BR.EDU.IMEPAC.INTERFACE.daodao;
+import BR.EDU.IMEPAC.UTILS.DatabaseConfig;
 import BR.EDU.IMEPAC.ENTIDADES.Atendente;
-import BR.EDU.IMEPAC.ENTIDADES.Medicos;
-import BR.EDU.IMEPAC.ENTIDADES.Pacientes;
+import br.edu.imepac.message.manager.interfaces.daodao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,15 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import BR.EDU.IMEPAC.ENTIDADES.Atendente;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-public class AtendenteDAO implements IdatabaseCRUD<Atendente> {
+public class AtendenteDAO implements daodao<Atendente> {
     private Connection connection;
 
     private void createConnection() throws SQLException {
@@ -31,11 +22,11 @@ public class AtendenteDAO implements IdatabaseCRUD<Atendente> {
     }
 
     @Override
-    public int save(Contact person) throws SQLException {
+    public int save(Atendente person) throws SQLException {
         this.createConnection();
         String sql = "insert into contacts(name, email) values(?,?)";
         PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
-        preparedStatement.setString(1, person.getName());
+        preparedStatement.setString(1, person.getNome());
         preparedStatement.setString(2, person.getEmail());
         int result = preparedStatement.executeUpdate();
         this.destroyConnection();
@@ -82,12 +73,12 @@ public class AtendenteDAO implements IdatabaseCRUD<Atendente> {
     }
 
     @Override
-    public ArrayList<Contact> findAll() throws SQLException {
+    public ArrayList<Atendente> findAll() throws SQLException {
         this.createConnection();
         String sql = "select * from contacts";
         PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
-        ArrayList<Contact> persons = new ArrayList<>();
+        ArrayList<Atendente> persons = new ArrayList<>();
         while (resultSet.next()) {
             persons.add(new Contact(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getString("email")));
         }
