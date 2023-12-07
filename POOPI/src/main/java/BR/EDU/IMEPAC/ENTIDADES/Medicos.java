@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BR.EDU.IMEPAC.ENTIDADES;
 
 /**
@@ -10,18 +6,28 @@ package BR.EDU.IMEPAC.ENTIDADES;
  */
 public class Medicos {
 
+    private Long id;  // Added ID field
     private String nome;
     private String cpf;
     private String CRM;
     private String data_nascimento;
     private Boolean convenio;
 
-    public Medicos(String nome, String cpf, String CRM, String data_nascimento, Boolean convenio) {
+    public Medicos(Long id, String nome, String cpf, String CRM, String data_nascimento, Boolean convenio) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.CRM = CRM;
         this.data_nascimento = data_nascimento;
         this.convenio = convenio;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -63,5 +69,4 @@ public class Medicos {
     public void setConvenio(Boolean convenio) {
         this.convenio = convenio;
     }
-
 }

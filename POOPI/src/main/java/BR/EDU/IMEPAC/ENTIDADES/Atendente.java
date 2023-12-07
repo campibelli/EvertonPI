@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BR.EDU.IMEPAC.ENTIDADES;
 
 /**
@@ -9,16 +5,26 @@ package BR.EDU.IMEPAC.ENTIDADES;
  * @author lucii
  */
 public class Atendente {
+    private Long id;
     private String nome;
     private String cpf;
     private String data_nascimento;
     private String registro_funcionario;
 
-    public Atendente(String nome, String cpf, String data_nascimento, String registro_funcionario) {
+    public Atendente(Long id, String nome, String cpf, String data_nascimento, String registro_funcionario) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.data_nascimento = data_nascimento;
         this.registro_funcionario = registro_funcionario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -52,6 +58,4 @@ public class Atendente {
     public void setRegistro_funcionario(String registro_funcionario) {
         this.registro_funcionario = registro_funcionario;
     }
-    
-    
 }

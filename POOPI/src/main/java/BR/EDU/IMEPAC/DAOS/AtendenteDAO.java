@@ -17,13 +17,24 @@ public class AtendenteDAO implements idatabasecrudk<Atendente> {
     @Override
     public int save(Atendente atendente) throws SQLException {
         this.createConnection();
-        String sql = "INSERT INTO contacts(nome, cpf, data_nascimento, registro_funcionario) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        String sql = "INSERT INTO atendentes(nome, cpf, data_nascimento, registro_funcionario) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, atendente.getNome());
             preparedStatement.setString(2, atendente.getCpf());
             preparedStatement.setString(3, atendente.getData_nascimento());
             preparedStatement.setString(4, atendente.getRegistro_funcionario());
-            return preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+
+            // Retrieve the generated ID
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    atendente.setId(generatedKeys.getLong(1));
+                } else {
+                    throw new SQLException("Failed to retrieve generated ID.");
+                }
+            }
+
+            return 1; // Success
         } finally {
             this.destroyConnection();
         }
@@ -32,11 +43,12 @@ public class AtendenteDAO implements idatabasecrudk<Atendente> {
     @Override
     public Atendente read(Long id) throws SQLException {
         this.createConnection();
-        String sql = "SELECT * FROM contacts WHERE id = ?";
+        String sql = "SELECT * FROM atendentes WHERE id = ?";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? new Atendente(
+                        resultSet.getLong("id"),
                         resultSet.getString("nome"),
                         resultSet.getString("cpf"),
                         resultSet.getString("data_nascimento"),
@@ -51,7 +63,7 @@ public class AtendenteDAO implements idatabasecrudk<Atendente> {
     @Override
     public int delete(Long id) throws SQLException {
         this.createConnection();
-        String sql = "DELETE FROM contacts WHERE id = ?";
+        String sql = "DELETE FROM atendentes WHERE id = ?";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate();
@@ -63,7 +75,7 @@ public class AtendenteDAO implements idatabasecrudk<Atendente> {
     @Override
     public int update(Atendente atendente) throws SQLException {
         this.createConnection();
-        String sql = "UPDATE contacts SET nome = ?, cpf = ?, data_nascimento = ?, registro_funcionario = ? WHERE id = ?";
+        String sql = "UPDATE atendentes SET nome = ?, cpf = ?, data_nascimento = ?, registro_funcionario = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setString(1, atendente.getNome());
             preparedStatement.setString(2, atendente.getCpf());
@@ -79,12 +91,13 @@ public class AtendenteDAO implements idatabasecrudk<Atendente> {
     @Override
     public ArrayList<Atendente> findAll() throws SQLException {
         this.createConnection();
-        String sql = "SELECT * FROM contacts";
+        String sql = "SELECT * FROM atendentes";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             ArrayList<Atendente> atendentes = new ArrayList<>();
             while (resultSet.next()) {
                 atendentes.add(new Atendente(
+                        resultSet.getLong("id"),
                         resultSet.getString("nome"),
                         resultSet.getString("cpf"),
                         resultSet.getString("data_nascimento"),

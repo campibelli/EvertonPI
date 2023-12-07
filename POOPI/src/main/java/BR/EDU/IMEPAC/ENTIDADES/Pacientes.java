@@ -1,22 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BR.EDU.IMEPAC.ENTIDADES;
 
-/**
- *
- * @author lucii
- */
 public class Pacientes {
     
+    private Long id;
     private String nome;
     private String cpf;
     private String rg;
     private String data_nascimento;
     private int registro_paciente;
 
-    public Pacientes(String nome, String cpf, String rg, String data_nascimento, int registro_paciente) {
+    public Pacientes(Long id, String nome, String cpf, String rg, String data_nascimento, int registro_paciente) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
@@ -24,7 +18,13 @@ public class Pacientes {
         this.registro_paciente = registro_paciente;
     }
 
-    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     
     public String getNome() {
         return nome;
@@ -65,7 +65,4 @@ public class Pacientes {
     public void setRegistro_paciente(int registro_paciente) {
         this.registro_paciente = registro_paciente;
     }
-    
-    
-    
 }
