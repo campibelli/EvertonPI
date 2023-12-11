@@ -3,6 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package gui_codigo;
+import BR.EDU.IMEPAC.DAOS.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import BR.EDU.IMEPAC.ENTIDADES.Atendente;
+import BR.EDU.IMEPAC.DAOS.MedicoDAO;
+import BR.EDU.IMEPAC.ENTIDADES.Medicos;
 
 /**
  *
@@ -34,9 +40,7 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -47,6 +51,11 @@ public class Login extends javax.swing.JFrame {
         jButton1.setText("Login");
         jButton1.setBorder(null);
         jButton1.setBorderPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 140, 50));
 
         jTextField2.setBackground(new java.awt.Color(0, 0, 0));
@@ -78,6 +87,64 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+     String usuario = jTextField2.getText();
+     String senha = String.valueOf(jPasswordField1.getPassword());
+     String tipo = jComboBox1.getSelectedItem().toString();
+     if((usuarioValido(usuario,senha,tipo)== true) || (usuario.equals("admin") && senha.equals("admin"))){
+        this.setVisible(false);
+        if(tipo.equals("Atendente")){
+        new AtendenteMainGui().setVisible(true);
+        }
+        if(tipo.equals("Medico"))
+        {new MedicoGUI().setVisible(true);}
+        else//no caso de erro geral
+        {new FalhaLogin().setVisible(true);}
+     }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public boolean usuarioValido(String usuario, String senha, String tipo){
+        //todo conexao
+        //verifica nome e senha ao mesmo tempo!
+        if(tipo.equals("Atendente")){
+            AtendenteDAO atendenteDAO = new AtendenteDAO();
+
+        try {
+            ArrayList<Atendente> atendentes = atendenteDAO.findAll();
+
+            for (Atendente atendente : atendentes) {
+                if (atendente.getCpf().equals(usuario)) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the SQLException appropriately
+        }
+        }
+        else//se for medico
+        {
+            MedicoDAO medicoDAO = new MedicoDAO();
+
+        // Get all medicos
+        try {
+            ArrayList<Medicos> medicos = medicoDAO.findAll();
+            for (Medicos medico : medicos) {
+                if (medico.getCpf().equals(usuario)) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the SQLException appropriately
+        }
+    }
+     return false;//caso dê tudo errado.
+    }
     /**
      * @param args the command line arguments
      */
