@@ -33,9 +33,7 @@ public class AtendenteMainGui extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -63,7 +61,7 @@ public class AtendenteMainGui extends javax.swing.JFrame {
         jButton3.setBorder(null);
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 290, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_graficos/base_atendentePERFEITA.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/base_atendentePERFEITA.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));

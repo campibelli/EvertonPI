@@ -79,7 +79,7 @@ public class Login extends javax.swing.JFrame {
         jComboBox1.setBorder(null);
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 260, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui_graficos/login_principal.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login_principal.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1290, 710));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 680));
@@ -100,8 +100,8 @@ public class Login extends javax.swing.JFrame {
         }
         if(tipo.equals("Medico"))
         {new MedicoGUI().setVisible(true);}
-        else//no caso de erro geral
-        {new FalhaLogin().setVisible(true);}
+        /*else//no caso de erro geral
+        {new FalhaLogin().setVisible(true);}*/
      }
     }//GEN-LAST:event_jButton1ActionPerformed
 
