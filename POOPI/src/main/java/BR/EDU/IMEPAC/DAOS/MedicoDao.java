@@ -15,34 +15,39 @@ public class MedicoDAO implements idatabasecrudk<Medicos> {
     }
 
     @Override
-    public int save(Medicos medico) throws SQLException {
-        this.createConnection();
-        String sql = "INSERT INTO medicos(nome, cpf, CRM, data_nascimento, convenio) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, medico.getNome());
-            preparedStatement.setString(2, medico.getCpf());
-            preparedStatement.setString(3, medico.getCRM());
-            preparedStatement.setString(4, medico.getData_nascimento());
-            preparedStatement.setBoolean(5, medico.getConvenio());
-            int affectedRows = preparedStatement.executeUpdate();
+public int save(Medicos medico) throws SQLException {
+    this.createConnection();
+    String sql = "INSERT INTO medicos(nome, cpf, CRM, especialidade) VALUES (?, ?, ?, ?)";
+    try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        preparedStatement.setString(1, medico.getNome());
+        preparedStatement.setString(2, medico.getCpf());
+        preparedStatement.setString(3, medico.getCRM());
+        preparedStatement.setString(4, medico.getEspecialidade()); // Set the new field
+        int affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows == 0) {
-                throw new SQLException("Creating doctor failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    medico.setId(generatedKeys.getLong(1));
-                } else {
-                    throw new SQLException("Creating doctor failed, no ID obtained.");
-                }
-            }
-
-            return affectedRows;
-        } finally {
-            this.destroyConnection();
+        if (affectedRows == 0) {
+            throw new SQLException("Creating doctor failed, no rows affected.");
         }
+
+        try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                // Check if the ID is not NULL before setting it
+                long id = generatedKeys.getLong(1);
+                if (!generatedKeys.wasNull()) {
+                    medico.setId(id);
+                } else {
+                    System.out.println("ID not obtained for the doctor.");
+                }
+            } else {
+                System.out.println("ID not obtained for the doctor.");
+            }
+        }
+
+        return affectedRows;
+    } finally {
+        this.destroyConnection();
     }
+}
 
     @Override
     public Medicos read(Long id) throws SQLException {
@@ -56,8 +61,7 @@ public class MedicoDAO implements idatabasecrudk<Medicos> {
                         resultSet.getString("nome"),
                         resultSet.getString("cpf"),
                         resultSet.getString("CRM"),
-                        resultSet.getString("data_nascimento"),
-                        resultSet.getBoolean("convenio")
+                        resultSet.getString("especialidade") // Get the new field
                 ) : null;
             }
         } finally {
@@ -80,14 +84,13 @@ public class MedicoDAO implements idatabasecrudk<Medicos> {
     @Override
     public int update(Medicos medico) throws SQLException {
         this.createConnection();
-        String sql = "UPDATE medicos SET nome = ?, cpf = ?, CRM = ?, data_nascimento = ?, convenio = ? WHERE id = ?";
+        String sql = "UPDATE medicos SET nome = ?, cpf = ?, CRM = ?, especialidade = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setString(1, medico.getNome());
             preparedStatement.setString(2, medico.getCpf());
             preparedStatement.setString(3, medico.getCRM());
-            preparedStatement.setString(4, medico.getData_nascimento());
-            preparedStatement.setBoolean(5, medico.getConvenio());
-            preparedStatement.setLong(6, medico.getId());
+            preparedStatement.setString(4, medico.getEspecialidade()); // Set the new field
+            preparedStatement.setLong(5, medico.getId());
             return preparedStatement.executeUpdate();
         } finally {
             this.destroyConnection();
@@ -97,7 +100,7 @@ public class MedicoDAO implements idatabasecrudk<Medicos> {
     @Override
     public ArrayList<Medicos> findAll() throws SQLException {
         this.createConnection();
-        String sql = "SELECT * FROM medicos";
+        String sql = "SELECT id, nome, cpf, CRM, especialidade FROM medicos";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             ArrayList<Medicos> medicosList = new ArrayList<>();
@@ -107,8 +110,7 @@ public class MedicoDAO implements idatabasecrudk<Medicos> {
                         resultSet.getString("nome"),
                         resultSet.getString("cpf"),
                         resultSet.getString("CRM"),
-                        resultSet.getString("data_nascimento"),
-                        resultSet.getBoolean("convenio")
+                        resultSet.getString("especialidade") // Get the new field
                 ));
             }
             return medicosList;

@@ -3,19 +3,17 @@ package BR.EDU.IMEPAC.ENTIDADES;
 public class Pacientes {
     
     private Long id;
-    private String nome;
     private String cpf;
-    private String rg;
-    private String data_nascimento;
-    private int registro_paciente;
+    private String nome;
+    private String endereco; // Changed from data_nascimento to endereco
+    private String historicoMedico;
 
-    public Pacientes(Long id, String nome, String cpf, String rg, String data_nascimento, int registro_paciente) {
+    public Pacientes(Long id, String cpf, String nome, String endereco, String historicoMedico) {
         this.id = id;
-        this.nome = nome;
         this.cpf = cpf;
-        this.rg = rg;
-        this.data_nascimento = data_nascimento;
-        this.registro_paciente = registro_paciente;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.historicoMedico = historicoMedico;
     }
 
     public Long getId() {
@@ -42,27 +40,19 @@ public class Pacientes {
         this.cpf = cpf;
     }
 
-    public String getRg() {
-        return rg;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setRg(String rg) {
-        this.rg = rg;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
-    public String getData_nascimento() {
-        return data_nascimento;
+    public String getHistoricoMedico() {
+        return historicoMedico;
     }
 
-    public void setData_nascimento(String data_nascimento) {
-        this.data_nascimento = data_nascimento;
-    }
-
-    public int getRegistro_paciente() {
-        return registro_paciente;
-    }
-
-    public void setRegistro_paciente(int registro_paciente) {
-        this.registro_paciente = registro_paciente;
+    public void setHistoricoMedico(String historicoMedico) {
+        this.historicoMedico = historicoMedico;
     }
 }

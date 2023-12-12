@@ -46,7 +46,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setBackground(new java.awt.Color(255, 0, 0));
-        jButton1.setFont(new java.awt.Font("ALLEGATIONS", 0, 24)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Login");
         jButton1.setBorder(null);
@@ -56,31 +56,29 @@ public class Login extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 140, 50));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 510, 140, 50));
 
         jTextField2.setBackground(new java.awt.Color(0, 0, 0));
-        jTextField2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jTextField2.setFont(new java.awt.Font("Rajdhani", 1, 36)); // NOI18N
         jTextField2.setForeground(new java.awt.Color(255, 255, 255));
         jTextField2.setText("Usuário ou Email");
         jTextField2.setBorder(null);
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 530, 50));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 530, 50));
 
         jPasswordField1.setBackground(new java.awt.Color(0, 0, 0));
-        jPasswordField1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        jPasswordField1.setFont(new java.awt.Font("Rajdhani", 1, 36)); // NOI18N
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
         jPasswordField1.setText("jPasswordField1");
         jPasswordField1.setBorder(null);
-        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 530, 50));
+        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 530, 50));
 
-        jComboBox1.setBackground(new java.awt.Color(0, 0, 0));
-        jComboBox1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
-        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox1.setFont(new java.awt.Font("Rajdhani", 1, 36)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Atendente", "Médico" }));
         jComboBox1.setBorder(null);
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 260, 50));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, 260, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login_principal.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1290, 710));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loginremold.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1290, 710));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 680));
 
@@ -97,12 +95,11 @@ public class Login extends javax.swing.JFrame {
         this.setVisible(false);
         if(tipo.equals("Atendente")){
         new AtendenteMainGui().setVisible(true);
-        }
-        if(tipo.equals("Medico"))
+        }else if(tipo.equals("Medico"))
         {new MedicoGUI().setVisible(true);}
-        /*else//no caso de erro geral
-        {new FalhaLogin().setVisible(true);}*/
-     }
+        }else
+        {new LoginErro().setVisible(true);}
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public boolean usuarioValido(String usuario, String senha, String tipo){

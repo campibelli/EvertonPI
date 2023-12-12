@@ -17,13 +17,12 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
     @Override
     public int save(Pacientes paciente) throws SQLException {
         this.createConnection();
-        String sql = "INSERT INTO pacientes(nome, cpf, rg, data_nascimento, registro_paciente) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pacientes(cpf, nome, endereco, historico_medico) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, paciente.getNome());
-            preparedStatement.setString(2, paciente.getCpf());
-            preparedStatement.setString(3, paciente.getRg());
-            preparedStatement.setString(4, paciente.getData_nascimento());
-            preparedStatement.setInt(5, paciente.getRegistro_paciente());
+            preparedStatement.setString(1, paciente.getCpf());
+            preparedStatement.setString(2, paciente.getNome());
+            preparedStatement.setString(3, paciente.getEndereco());
+            preparedStatement.setString(4, paciente.getHistoricoMedico());
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 0) {
@@ -53,11 +52,10 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? new Pacientes(
                         resultSet.getLong("id"),
-                        resultSet.getString("nome"),
                         resultSet.getString("cpf"),
-                        resultSet.getString("rg"),
-                        resultSet.getString("data_nascimento"),
-                        resultSet.getInt("registro_paciente")
+                        resultSet.getString("nome"),
+                        resultSet.getString("endereco"),
+                        resultSet.getString("historico_medico")
                 ) : null;
             }
         } finally {
@@ -80,14 +78,13 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
     @Override
     public int update(Pacientes paciente) throws SQLException {
         this.createConnection();
-        String sql = "UPDATE pacientes SET nome = ?, cpf = ?, rg = ?, data_nascimento = ?, registro_paciente = ? WHERE id = ?";
+        String sql = "UPDATE pacientes SET cpf = ?, nome = ?, endereco = ?, historico_medico = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, paciente.getNome());
-            preparedStatement.setString(2, paciente.getCpf());
-            preparedStatement.setString(3, paciente.getRg());
-            preparedStatement.setString(4, paciente.getData_nascimento());
-            preparedStatement.setInt(5, paciente.getRegistro_paciente());
-            preparedStatement.setLong(6, paciente.getId());
+            preparedStatement.setString(1, paciente.getCpf());
+            preparedStatement.setString(2, paciente.getNome());
+            preparedStatement.setString(3, paciente.getEndereco());
+            preparedStatement.setString(4, paciente.getHistoricoMedico());
+            preparedStatement.setLong(5, paciente.getId());
             return preparedStatement.executeUpdate();
         } finally {
             this.destroyConnection();
@@ -104,11 +101,10 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
             while (resultSet.next()) {
                 pacientesList.add(new Pacientes(
                         resultSet.getLong("id"),
-                        resultSet.getString("nome"),
                         resultSet.getString("cpf"),
-                        resultSet.getString("rg"),
-                        resultSet.getString("data_nascimento"),
-                        resultSet.getInt("registro_paciente")
+                        resultSet.getString("nome"),
+                        resultSet.getString("endereco"),
+                        resultSet.getString("historico_medico")
                 ));
             }
             return pacientesList;
