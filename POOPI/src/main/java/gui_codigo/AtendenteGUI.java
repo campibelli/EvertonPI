@@ -9,6 +9,7 @@ import BR.EDU.IMEPAC.ENTIDADES.Consultas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.awt.Color;
 /**
  *
  * @author lucii
@@ -51,8 +52,13 @@ public class AtendenteGUI extends javax.swing.JFrame {
 
         jComboBox1.setEditable(true);
         jComboBox1.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tipo de consulta...", "Ortopedista", "Radiologista", "Pintologista" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tipo de consulta...", "Ortopedista", "Radiologista", "Otorrinolaringologista", "Endocrinologista", "Clínico Geral", "Psiquiatra", " ", " " }));
         jComboBox1.setBorder(null);
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 260, 450, 50));
 
         jTextField1.setBackground(new java.awt.Color(0, 0, 0));
@@ -68,7 +74,7 @@ public class AtendenteGUI extends javax.swing.JFrame {
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 160, 450, 60));
 
         jComboBox2.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma data", "13/01/2024 13:15:00", "13/01/2024 14:00:00" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma data", "13/01/2024 13:15:00", "13/01/2024 14:00:00", "14/01/2024 17:00:00" }));
         jComboBox2.setBorder(null);
         jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 450, 50));
 
@@ -90,6 +96,7 @@ public class AtendenteGUI extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("CANCELAR");
         jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton1.setBorderPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -99,8 +106,9 @@ public class AtendenteGUI extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Orbitron", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Agendamento Efetuado!");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 380, 50));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 720, 50));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/AGENDAMENTO.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1280, 710));
@@ -123,32 +131,56 @@ public class AtendenteGUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String nomePaciente = jTextField1.getText();
-    String tipoConsulta = (String)jComboBox1.getSelectedItem();
-    String horario = (String)jComboBox2.getSelectedItem();
+        
+    String nomePaciente = jTextField1.getText();
+    String tipoConsulta = (String) jComboBox1.getSelectedItem();
+    String horario = (String) jComboBox2.getSelectedItem();
 
-Consultas consulta = new Consultas(null, nomePaciente, tipoConsulta, horario);
-
-try {
-    ConsultasDAO consultasDAO = new ConsultasDAO();
-    int affectedRows = consultasDAO.save(consulta);
-
-    if (affectedRows > 0) {
-        System.out.println("registered successfully!");
-        jLabel2.setText("Agendamento Efetuado!");
+    // Check if tipoConsulta and horario are valid
+    if ("Tipo de consulta...".equals(tipoConsulta)) {
+        jLabel2.setForeground(Color.WHITE);
+        jLabel2.setText("Selecione uma consulta!");
         jLabel2.setVisible(true);
-    } else {
-        // Registration failed
-        System.out.println("Registration failed.");
-        jLabel2.setText("Erro ao agendar.");
+        return;
+    }
+
+    if ("Selecione uma data".equals(horario)) {
+        jLabel2.setForeground(Color.WHITE);
+        jLabel2.setText("Por favor, escolha uma data!");
+        jLabel2.setVisible(true);
+        return;
+    }
+
+    Consultas consulta = new Consultas(null, nomePaciente, tipoConsulta, horario);
+
+    try {
+        ConsultasDAO consultasDAO = new ConsultasDAO();
+        int affectedRows = consultasDAO.save(consulta);
+
+        if (affectedRows > 0) {
+            System.out.println("registered successfully!");
+            jLabel2.setText("Agendamento Efetuado!");
+            jLabel2.setForeground(Color.WHITE);
+            jLabel2.setVisible(true);
+        } else {
+            // Registration failed
+            System.out.println("Registration failed.");
+            jLabel2.setText("Erro ao agendar.");
+            jLabel2.setForeground(Color.RED);
+            jLabel2.setVisible(true);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        jLabel2.setText("Falha no módulo SQL");
+        jLabel2.setForeground(Color.RED);
         jLabel2.setVisible(true);
     }
-} catch (SQLException ex) {
-    ex.printStackTrace();
-    jLabel2.setText("Falha no módulo SQL");
-    jLabel2.setVisible(true);
-}
+
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -17,12 +17,14 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
     @Override
     public int save(Pacientes paciente) throws SQLException {
         this.createConnection();
-        String sql = "INSERT INTO pacientes(cpf, nome, endereco, historico_medico) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO pacientes(cpf, nome, data_nascimento, endereco, historico_medico, tipo_sanguineo) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, paciente.getCpf());
             preparedStatement.setString(2, paciente.getNome());
-            preparedStatement.setString(3, paciente.getEndereco());
-            preparedStatement.setString(4, paciente.getHistoricoMedico());
+            preparedStatement.setString(3, paciente.getDataNascimento());
+            preparedStatement.setString(4, paciente.getEndereco());
+            preparedStatement.setString(5, paciente.getHistoricoMedico());
+            preparedStatement.setString(6, paciente.getTipoSanguineo());
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 0) {
@@ -54,8 +56,10 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
                         resultSet.getLong("id"),
                         resultSet.getString("cpf"),
                         resultSet.getString("nome"),
+                        resultSet.getString("data_nascimento"),
                         resultSet.getString("endereco"),
-                        resultSet.getString("historico_medico")
+                        resultSet.getString("historico_medico"),
+                        resultSet.getString("tipo_sanguineo")
                 ) : null;
             }
         } finally {
@@ -78,19 +82,44 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
     @Override
     public int update(Pacientes paciente) throws SQLException {
         this.createConnection();
-        String sql = "UPDATE pacientes SET cpf = ?, nome = ?, endereco = ?, historico_medico = ? WHERE id = ?";
+        String sql = "UPDATE pacientes SET cpf = ?, nome = ?, data_nascimento = ?, endereco = ?, historico_medico = ?, tipo_sanguineo = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setString(1, paciente.getCpf());
             preparedStatement.setString(2, paciente.getNome());
-            preparedStatement.setString(3, paciente.getEndereco());
-            preparedStatement.setString(4, paciente.getHistoricoMedico());
-            preparedStatement.setLong(5, paciente.getId());
+            preparedStatement.setString(3, paciente.getDataNascimento());
+            preparedStatement.setString(4, paciente.getEndereco());
+            preparedStatement.setString(5, paciente.getHistoricoMedico());
+            preparedStatement.setString(6, paciente.getTipoSanguineo());
+            preparedStatement.setLong(7, paciente.getId());
             return preparedStatement.executeUpdate();
         } finally {
             this.destroyConnection();
         }
     }
+    
+    public Pacientes findByName(String name) throws SQLException {
+    this.createConnection();
 
+    String sql = "SELECT * FROM pacientes WHERE nome = ?";
+    
+    try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        preparedStatement.setString(1, name);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            return resultSet.next() ? new Pacientes(
+                    resultSet.getLong("id"),
+                    resultSet.getString("cpf"),
+                    resultSet.getString("nome"),
+                    resultSet.getString("data_nascimento"),
+                    resultSet.getString("endereco"),
+                    resultSet.getString("historico_medico"),
+                    resultSet.getString("tipo_sanguineo")
+            ) : null;
+        }
+    } finally {
+        this.destroyConnection();
+    }
+}
     @Override
     public ArrayList<Pacientes> findAll() throws SQLException {
         this.createConnection();
@@ -103,8 +132,10 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
                         resultSet.getLong("id"),
                         resultSet.getString("cpf"),
                         resultSet.getString("nome"),
+                        resultSet.getString("data_nascimento"),
                         resultSet.getString("endereco"),
-                        resultSet.getString("historico_medico")
+                        resultSet.getString("historico_medico"),
+                        resultSet.getString("tipo_sanguineo")
                 ));
             }
             return pacientesList;
@@ -124,7 +155,7 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
             this.destroyConnection();
         }
     }
-    
+
     private void destroyConnection() throws SQLException {
         if (this.connection != null && !this.connection.isClosed()) {
             this.connection.close();

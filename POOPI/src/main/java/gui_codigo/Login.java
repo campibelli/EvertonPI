@@ -77,7 +77,7 @@ public class Login extends javax.swing.JFrame {
         jComboBox1.setFont(new java.awt.Font("Rajdhani", 1, 36)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Atendente", "Médico" }));
         jComboBox1.setBorder(null);
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, 260, 50));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 390, 260, 50));
 
         jLabel2.setFont(new java.awt.Font("Orbitron", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));

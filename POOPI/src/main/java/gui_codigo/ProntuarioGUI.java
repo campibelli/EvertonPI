@@ -16,6 +16,9 @@ public class ProntuarioGUI extends javax.swing.JFrame {
     public ProntuarioGUI() {
         initComponents();
     }
+    public javax.swing.JTextArea getJTextArea2() {
+        return jTextArea2;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,9 +31,8 @@ public class ProntuarioGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
+        jTextArea2 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,34 +50,26 @@ public class ProntuarioGUI extends javax.swing.JFrame {
         jButton1.setBorderPainted(false);
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 710, 140, 50));
 
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(143, 28));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(143, 28));
-        jScrollPane1.setWheelScrollingEnabled(false);
-
-        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setColumns(1);
-        jTextArea1.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(1);
-        jTextArea1.setTabSize(1);
-        jTextArea1.setText("Nenhum registro");
-        jTextArea1.setMaximumSize(new java.awt.Dimension(143, 28));
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 540, 520));
-
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Voltar");
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton2.setBorderPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 710, 140, 50));
+
+        jTextArea2.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea2.setColumns(20);
+        jTextArea2.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
+        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea2.setRows(5);
+        jTextArea2.setText("Nenhum Registro...");
+        jPanel1.add(jTextArea2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 540, 510));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/PRONTUARIO.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 800));
@@ -90,6 +84,7 @@ public class ProntuarioGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -131,7 +126,8 @@ public class ProntuarioGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
+
 }
+

@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package gui_codigo;
-
+import BR.EDU.IMEPAC.DAOS.ConsultasDAO;
+import BR.EDU.IMEPAC.ENTIDADES.Consultas;
+import java.sql.SQLException;
+import java.awt.Color;
 /**
  *
  * @author lucii
@@ -15,6 +18,7 @@ public class CancelarAgendamento extends javax.swing.JFrame {
      */
     public CancelarAgendamento() {
         initComponents();
+        jLabel3.setVisible(false);
     }
 
     /**
@@ -33,12 +37,12 @@ public class CancelarAgendamento extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -49,6 +53,7 @@ public class CancelarAgendamento extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Voltar");
         jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton1.setBorderPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -61,6 +66,7 @@ public class CancelarAgendamento extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Confirmar");
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton2.setBorderPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -76,20 +82,33 @@ public class CancelarAgendamento extends javax.swing.JFrame {
         jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 190, 460, 50));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "dd", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 440, 90, 30));
+        jComboBox1.setEnabled(false);
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 410, 90, 30));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "mm", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
-        jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 440, 90, 30));
+        jComboBox2.setEnabled(false);
+        jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 410, 90, 30));
 
         jComboBox3.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tipo da consulta...", "Radiologista", "Psiquiatra", "Clínica Geral", "Endocrinologista" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tipo da consulta...", "Radiologista", "Psiquiatra", "Clínico Geral", "Endocrinologista", "Psiquiatra" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 270, 460, 50));
+
+        jLabel3.setFont(new java.awt.Font("Orbitron", 1, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Registro deletado com sucesso!");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 480, 530, 70));
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("Orbitron", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Data da Consulta");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 370, 250, 60));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 340, 250, 60));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/CANCELARAGENDAMENTO.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1270, 720));
@@ -108,8 +127,44 @@ public class CancelarAgendamento extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        String nomePaciente = jTextField2.getText();
+        String tipoConsulta = (String) jComboBox3.getSelectedItem();
+
+try {
+    ConsultasDAO consultasDAO = new ConsultasDAO();
+    
+    Consultas existingConsulta = consultasDAO.findByNameAndTipo(nomePaciente, tipoConsulta);
+
+    if (existingConsulta != null) { //se existir...
+        int affectedRows = consultasDAO.delete(existingConsulta.getId());
+
+        if (affectedRows > 0) {
+            System.out.println("Deletion success!");
+            jLabel3.setText("Consulta excluída com sucesso!");
+            jLabel3.setForeground(Color.WHITE);
+            jLabel3.setVisible(true);
+        } else {
+            // Deletion failed
+            System.out.println("Consulta deletion failed.");
+            jLabel3.setText("Erro ao excluir registro.");
+            jLabel3.setForeground(Color.RED);
+            jLabel3.setVisible(true);
+        }
+    } else {
+        jLabel3.setText("Registro não encontrado.");
+        jLabel3.setVisible(true);
+    }
+} catch (SQLException ex) {
+    ex.printStackTrace(); // Handle the exception appropriately in your application
+    jLabel3.setText("Erro ao excluir registro.");
+    jLabel3.setVisible(true);
+}
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,6 +209,7 @@ public class CancelarAgendamento extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables

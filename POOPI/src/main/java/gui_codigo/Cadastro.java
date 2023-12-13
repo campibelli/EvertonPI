@@ -48,10 +48,14 @@ public class Cadastro extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1300, 720));
+        setMaximumSize(new java.awt.Dimension(1280, 720));
+        setMinimumSize(new java.awt.Dimension(1300, 710));
+        setPreferredSize(new java.awt.Dimension(1270, 740));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(1260, 700));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1260, 720));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setBackground(new java.awt.Color(255, 0, 0));
@@ -79,14 +83,14 @@ public class Cadastro extends javax.swing.JFrame {
         jTextField4.setForeground(new java.awt.Color(255, 255, 255));
         jTextField4.setText("Histórico Médico");
         jTextField4.setBorder(null);
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 580, 40));
+        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 580, 40));
 
         jTextField2.setBackground(new java.awt.Color(0, 0, 0));
         jTextField2.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
         jTextField2.setForeground(new java.awt.Color(255, 255, 255));
         jTextField2.setText("CPF");
         jTextField2.setBorder(null);
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 520, 40));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 520, -1));
 
         jTextField1.setBackground(new java.awt.Color(0, 0, 0));
         jTextField1.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
@@ -98,7 +102,7 @@ public class Cadastro extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 520, 40));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 520, 30));
 
         jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996" }));
@@ -147,9 +151,9 @@ public class Cadastro extends javax.swing.JFrame {
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 540, 150, 50));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroPaciente.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 710));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1490, 720));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1310, 710));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1420, 710));
 
         pack();
         setLocationRelativeTo(null);
@@ -173,27 +177,42 @@ public class Cadastro extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         String cpf = jTextField2.getText();
-        String nome = jTextField1.getText();
-        String endereco = jTextField3.getText();
-        String historicoMedico = jTextField4.getText();
+    String nome = jTextField1.getText();
+    String endereco = jTextField3.getText();
+    String historicoMedico = jTextField4.getText();
 
-        // Create a Pacientes object
-        Pacientes paciente = new Pacientes(null, cpf, nome, endereco, historicoMedico);
+    // Get data_nascimento from JComboBox
+    String dd = (String) jComboBox4.getSelectedItem();
+    String mm = (String) jComboBox3.getSelectedItem();
+    String yyyy = (String) jComboBox1.getSelectedItem();
+    String dataNascimento = dd + "/" + mm + "/" + yyyy;
 
-        try {
-            PacienteDAO pacienteDAO = new PacienteDAO();
-            int affectedRows = pacienteDAO.save(paciente);
+    // Get tipo_sanguineo from JComboBox
+    String tipoSanguineo = (String) jComboBox2.getSelectedItem();
 
-            if (affectedRows > 0) {
-                System.out.println("Patient registered successfully!");
-            } else {
-                // Registration failed
-                System.out.println("Patient registration failed.");
-                new ErroInsert().setVisible(true);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace(); // Handle the exception appropriately in your application
+    // Create a Pacientes object
+    Pacientes paciente = new Pacientes(null, cpf, nome, dataNascimento, endereco, historicoMedico, tipoSanguineo);
+
+    // If historicoMedico is null, empty, or default value, set it to "Nenhum Registro"
+    if (historicoMedico == null || historicoMedico.trim().isEmpty() || historicoMedico.equals("Histórico Médico")) {
+        historicoMedico = "Nenhum Registro";
+    }
+
+    try {
+        PacienteDAO pacienteDAO = new PacienteDAO();
+        int affectedRows = pacienteDAO.save(paciente);
+
+        if (affectedRows > 0) {
+            System.out.println("Patient registered successfully!");
+        } else {
+            // Registration failed
+            System.out.println("Patient registration failed.");
+            new ErroInsert().setVisible(true);
         }
+    } catch (SQLException ex) {
+        ex.printStackTrace(); // Handle the exception appropriately in your application
+    }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

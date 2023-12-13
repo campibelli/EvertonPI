@@ -46,7 +46,6 @@ public class ExclusaoGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -95,8 +94,9 @@ public class ExclusaoGUI extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cancelar");
+        jButton2.setText("Voltar");
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton2.setBorderPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -124,13 +124,13 @@ public class ExclusaoGUI extends javax.swing.JFrame {
 
         try {
             if (selectedType.equals("Paciente")) {
-                // Delete patient
                 PacienteDAO pacienteDAO = new PacienteDAO();
                 int affectedRows = pacienteDAO.deleteByNameAndCpf(name, cpfCrm);
 
                 if (affectedRows > 0) {
                     System.out.println("Patient deleted successfully!");
                     jLabel2.setText("Registro deletado com sucesso!");
+                    jLabel2.setForeground(Color.WHITE);
                     jLabel2.setVisible(true);
                 } else {
                     System.out.println("Patient deletion failed.");
@@ -146,6 +146,7 @@ public class ExclusaoGUI extends javax.swing.JFrame {
                 if (affectedRows > 0) {
                     System.out.println("Doctor deleted successfully!");
                     jLabel2.setText("Registro deletado com sucesso!");
+                    jLabel2.setForeground(Color.WHITE);
                     jLabel2.setVisible(true);
                 } else {
                     System.out.println("Doctor deletion failed.");
@@ -155,6 +156,8 @@ public class ExclusaoGUI extends javax.swing.JFrame {
                 }
             } else {
                 System.out.println("Invalid selection");
+                jLabel2.setText("Insira as informações!");
+                jLabel2.setVisible(true);
             }
         } catch (SQLException ex) {
             ex.printStackTrace(); // Handle the exception appropriately in your application

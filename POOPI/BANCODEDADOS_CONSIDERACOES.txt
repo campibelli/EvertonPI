@@ -2,10 +2,16 @@
 -- configurar credenciais no DatabaseConfig.java
 
 -- Banco deve seguir as seguintes características
-
 create table mediclin;
+use mediclin
+--Deixa a senha 123 na config,palhaço
 
--- Atendentes(exclusivo do backend!)
+create table consultas(
+id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+nome_paciente VARCHAR(60) NOT NULL,
+tipo_consulta VARCHAR(60) NOT NULL,
+horario VARCHAR(60) NOT NULL);
+
 create table atendentes(
 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 nome VARCHAR(60) NOT NULL,
@@ -13,34 +19,18 @@ cpf VARCHAR(13) UNIQUE NOT NULL,
 data_nascimento VARCHAR(10) NOT NULL,
 registro_funcionario VARCHAR(15) NOT NULL);
 
-
--- para pacientes
+create table medicos(
+id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+nome VARCHAR(60) NOT NULL,
+cpf VARCHAR(14) NOT NULL,
+CRM VARCHAR(14) NOT NULL,
+especialidade VARCHAR(40) NOT NULL);
 
 create table pacientes(
 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 cpf VARCHAR(14) UNIQUE NOT NULL,
 nome VARCHAR(60) NOT NULL,
+data_nascimento VARCHAR(20) NOT NULL,
 endereco VARCHAR(80) NOT NULL,
 historico_medico MEDIUMTEXT,
-alergias MEDIUMTEXT
-);
-
--- para consultas
-
-create table consultas(
-id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-nome_paciente VARCHAR(60) NOT NULL,
-horario VARCHAR(60) NOT NULL);
-
--- para medicos
-
-CREATE TABLE `medicos' (
-  'id` int NOT NULL AUTO_INCREMENT,
-  'nome' varchar(60) NOT NULL,
-  'cpf' varchar(14) NOT NULL,
-  'CRM' varchar(13) NOT NULL,
-  'especialidade' varchar(60) NOT NULL,
-  PRIMARY KEY ('id'),
-  UNIQUE KEY `cpf` ('cpf'),
-  UNIQUE KEY `CRM` ('CRM')
-);
+tipo_sanguineo VARCHAR(5));
