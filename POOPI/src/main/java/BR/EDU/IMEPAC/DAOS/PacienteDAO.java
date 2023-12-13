@@ -113,6 +113,18 @@ public class PacienteDAO implements idatabasecrudk<Pacientes> {
         }
     }
 
+    public int deleteByNameAndCpf(String nome, String cpf) throws SQLException {
+        this.createConnection();
+        String sql = "DELETE FROM pacientes WHERE nome = ? AND cpf = ?";
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, nome);
+            preparedStatement.setString(2, cpf);
+            return preparedStatement.executeUpdate();
+        } finally {
+            this.destroyConnection();
+        }
+    }
+    
     private void destroyConnection() throws SQLException {
         if (this.connection != null && !this.connection.isClosed()) {
             this.connection.close();

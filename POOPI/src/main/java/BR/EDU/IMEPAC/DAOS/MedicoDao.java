@@ -49,6 +49,19 @@ public int save(Medicos medico) throws SQLException {
     }
 }
 
+public int deleteByNameAndCrm(String nome, String crm) throws SQLException {
+        this.createConnection();
+        String sql = "DELETE FROM medicos WHERE nome = ? AND CRM = ?";
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, nome);
+            preparedStatement.setString(2, crm);
+            return preparedStatement.executeUpdate();
+        } finally {
+            this.destroyConnection();
+        }
+    }
+
+
     @Override
     public Medicos read(Long id) throws SQLException {
         this.createConnection();

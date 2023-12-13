@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package gui_codigo;
-
+import java.sql.SQLException;
+import BR.EDU.IMEPAC.DAOS.ConsultasDAO;
+import BR.EDU.IMEPAC.ENTIDADES.Consultas;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 /**
  *
  * @author lucii
@@ -15,6 +20,7 @@ public class AtendenteGUI extends javax.swing.JFrame {
      */
     public AtendenteGUI() {
         initComponents();
+        jLabel2.setVisible(false);
     }
 
     /**
@@ -32,6 +38,7 @@ public class AtendenteGUI extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,6 +78,11 @@ public class AtendenteGUI extends javax.swing.JFrame {
         jButton2.setText("AGENDAR");
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 500, 150, 50));
 
         jButton1.setBackground(new java.awt.Color(0, 0, 0));
@@ -78,7 +90,17 @@ public class AtendenteGUI extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("CANCELAR");
         jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 500, 150, 50));
+
+        jLabel2.setFont(new java.awt.Font("Orbitron", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Agendamento Efetuado!");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 380, 50));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/AGENDAMENTO.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1280, 710));
@@ -86,11 +108,47 @@ public class AtendenteGUI extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 700));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new AtendenteMainGui().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String nomePaciente = jTextField1.getText();
+    String tipoConsulta = (String)jComboBox1.getSelectedItem();
+    String horario = (String)jComboBox2.getSelectedItem();
+
+Consultas consulta = new Consultas(null, nomePaciente, tipoConsulta, horario);
+
+try {
+    ConsultasDAO consultasDAO = new ConsultasDAO();
+    int affectedRows = consultasDAO.save(consulta);
+
+    if (affectedRows > 0) {
+        System.out.println("registered successfully!");
+        jLabel2.setText("Agendamento Efetuado!");
+        jLabel2.setVisible(true);
+    } else {
+        // Registration failed
+        System.out.println("Registration failed.");
+        jLabel2.setText("Erro ao agendar.");
+        jLabel2.setVisible(true);
+    }
+} catch (SQLException ex) {
+    ex.printStackTrace();
+    jLabel2.setText("Falha no módulo SQL");
+    jLabel2.setVisible(true);
+}
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -133,6 +191,7 @@ public class AtendenteGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

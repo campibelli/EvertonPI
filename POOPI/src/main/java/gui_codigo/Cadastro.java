@@ -152,6 +152,7 @@ public class Cadastro extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1310, 710));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -188,6 +189,7 @@ public class Cadastro extends javax.swing.JFrame {
             } else {
                 // Registration failed
                 System.out.println("Patient registration failed.");
+                new ErroInsert().setVisible(true);
             }
         } catch (SQLException ex) {
             ex.printStackTrace(); // Handle the exception appropriately in your application

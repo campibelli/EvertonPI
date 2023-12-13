@@ -3,6 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package gui_codigo;
+import BR.EDU.IMEPAC.DAOS.PacienteDAO;
+import BR.EDU.IMEPAC.DAOS.MedicoDAO;
+import BR.EDU.IMEPAC.ENTIDADES.Pacientes;
+import BR.EDU.IMEPAC.ENTIDADES.Medicos;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.awt.Color; 
 
 /**
  *
@@ -15,6 +23,7 @@ public class ExclusaoGUI extends javax.swing.JFrame {
      */
     public ExclusaoGUI() {
         initComponents();
+        jLabel2.setVisible(false);
     }
 
     /**
@@ -31,6 +40,7 @@ public class ExclusaoGUI extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -60,7 +70,7 @@ public class ExclusaoGUI extends javax.swing.JFrame {
 
         jComboBox1.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Medico", "Paciente" }));
-        jComboBox1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 0, 51), 1, true));
+        jComboBox1.setBorder(null);
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 400, 250, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 0, 0));
@@ -69,13 +79,29 @@ public class ExclusaoGUI extends javax.swing.JFrame {
         jButton1.setText("Excluir");
         jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
         jButton1.setBorderPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 520, 150, 50));
+
+        jLabel2.setFont(new java.awt.Font("Rajdhani", 0, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Registro deletado com sucesso!");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, 520, 40));
 
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Rajdhani", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Cancelar");
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 150, 50));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exclusao.png"))); // NOI18N
@@ -84,7 +110,62 @@ public class ExclusaoGUI extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 710));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        // Get the selected type (patient or doctor)
+        String selectedType = (String) jComboBox1.getSelectedItem();
+
+        // Get name and cpf/CRM from TextFields
+        String name = jTextField2.getText();
+        String cpfCrm = jTextField1.getText();
+
+        try {
+            if (selectedType.equals("Paciente")) {
+                // Delete patient
+                PacienteDAO pacienteDAO = new PacienteDAO();
+                int affectedRows = pacienteDAO.deleteByNameAndCpf(name, cpfCrm);
+
+                if (affectedRows > 0) {
+                    System.out.println("Patient deleted successfully!");
+                    jLabel2.setText("Registro deletado com sucesso!");
+                    jLabel2.setVisible(true);
+                } else {
+                    System.out.println("Patient deletion failed.");
+                    jLabel2.setText("Erro ao deletar...");
+                    jLabel2.setForeground(Color.RED);
+                    jLabel2.setVisible(true);
+                }
+            } else if (selectedType.equals("Medico")) {
+                // Delete doctor
+                MedicoDAO medicoDAO = new MedicoDAO();
+                int affectedRows = medicoDAO.deleteByNameAndCrm(name, cpfCrm);
+
+                if (affectedRows > 0) {
+                    System.out.println("Doctor deleted successfully!");
+                    jLabel2.setText("Registro deletado com sucesso!");
+                    jLabel2.setVisible(true);
+                } else {
+                    System.out.println("Doctor deletion failed.");
+                    jLabel2.setText("Erro ao deletar...");
+                    jLabel2.setForeground(Color.RED);
+                    jLabel2.setVisible(true);
+                }
+            } else {
+                System.out.println("Invalid selection");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // Handle the exception appropriately in your application
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new AtendenteMainGui().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,6 +207,7 @@ public class ExclusaoGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
